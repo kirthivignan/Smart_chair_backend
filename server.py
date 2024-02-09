@@ -66,9 +66,9 @@ def store_data():
             global_data[chair_id] = data
 
         # using multi thread deamon store data to db
-        # thread = threading.Thread(target=store_to_db, args=(data,))
-        # thread.daemon = True
-        # thread.start()
+        thread = threading.Thread(target=store_to_db, args=(data,))
+        thread.daemon = True
+        thread.start()
 
         return jsonify({"message": "Data stored successfully"})
     except Exception as e:
