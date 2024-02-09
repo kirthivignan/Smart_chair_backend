@@ -66,9 +66,9 @@ def store_data():
             global_data[chair_id] = data
 
         # using multi thread deamon store data to db
-        thread = threading.Thread(target=store_to_db, args=(data,))
-        thread.daemon = True
-        thread.start()
+        # thread = threading.Thread(target=store_to_db, args=(data,))
+        # thread.daemon = True
+        # thread.start()
 
         return jsonify({"message": "Data stored successfully"})
     except Exception as e:
@@ -113,7 +113,7 @@ def get_chair_id_count():
         chair_id_count = len(chair_ids)
         # todo:: return type, active / inactive status
         active_list = []
-        isactive_list = []
+        inactive_list = []
         # check the time stamp of the data
         for chair_id in chair_ids:
             data = global_data[chair_id]
@@ -123,11 +123,11 @@ def get_chair_id_count():
             # if the difference between the current time and the timestamp is less than 10 seconds, the chair is active
             if (current_time - timestamp).seconds < 10:
                 # append to active list and tyoe of device
-                active_list.append(chair_id, type_of_device)
+                active_list.append({'chair_id': chair_id, 'type_of_device': type_of_device})
 
             else:
-                isactive_list.append(chair_id, type_of_device)
-        return jsonify({"number": chair_id_count, "chair_ids": chair_ids, "active_list": active_list, "inactive_list": isactive_list})
+                inactive_list.append({'chair_id': chair_id, 'type_of_device': type_of_device})
+        return jsonify({"number": chair_id_count, "chair_ids": chair_ids, "active_list": active_list, "inactive_list": inactive_list})
     except Exception as e:
         return jsonify({"error": str(e)})
 
